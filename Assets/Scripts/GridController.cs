@@ -27,14 +27,10 @@ public class GridController : MonoBehaviour
         PlayerInput();
     }
 
-    private void Update() 
-    {
-
-    }
-
     private void PlayerInput()
     {
         playerControl.Player.Move.started += OnPlayerChangedTile;
+        playerControl.Player.Rotate.started += OnPlayerRotate;
     }
 
     private void OnPlayerChangedTile(InputAction.CallbackContext context) 
@@ -42,6 +38,12 @@ public class GridController : MonoBehaviour
         playerInput = context.ReadValue<float>();
         currentSelection = NormalizePlayerInput(playerInput);
         grid.SetHoveredTile(currentSelection);
+    }
+
+    private void OnPlayerRotate(InputAction.CallbackContext context) 
+    {
+        grid.RotateGrid();
+        currentSelection = TileChoice.Left;
     }
 
     private TileChoice NormalizePlayerInput(float input)

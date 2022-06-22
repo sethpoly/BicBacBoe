@@ -65,6 +65,8 @@ public class GridManager : MonoBehaviour
 
     public Dictionary<Vector2, Tile> tiles { get; private set; }
     private GridDirection direction = GridDirection.North;
+    [SerializeField] private Boolean rotating = false;
+    [SerializeField] private float rotateDuration = 0.5f;
     
 
     void Start()
@@ -100,6 +102,39 @@ public class GridManager : MonoBehaviour
     private void SetupGrid() 
     {
         SetHoveredTile(TileChoice.Left);
+
+        // Update pivot to be middle tile
+        Vector3 centerTilePos = tiles.Values.ToList()[tiles.Count / 2].transform.position;
+        transform.position = centerTilePos;
+
+        // Become a daddy to all tiles
+        tiles.Values.ToList().ForEach(t => t.transform.SetParent(transform));
+    }
+
+    public void RotateGrid()
+    {
+        if(!rotating) 
+        {
+            direction = direction.Next();
+            StartCoroutine(Rotate90());
+            SetHoveredTile();
+        }
+    }
+
+    IEnumerator Rotate90()
+    {
+        rotating = true;
+        float timeElapsed = 0;
+        Quaternion startRotation = transform.rotation;
+        Quaternion targetRotation = transform.rotation * Quaternion.Euler(0, 0, 90);
+        while (timeElapsed < rotateDuration)
+        {
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / rotateDuration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.rotation = targetRotation;
+        rotating = false;
     }
 
     public Tile GetTileAtPosition(Vector2 pos)
@@ -134,7 +169,7 @@ public class GridManager : MonoBehaviour
     }
 
     // Apply hover modifier to specified tile
-    public void SetHoveredTile(TileChoice choice) {
+    public void SetHoveredTile(TileChoice choice = TileChoice.Left) {
         tiles.Values.ToList().ForEach(t => t.OnHoverExit());
         GetTileFromChoice(choice).OnHover();
     }
