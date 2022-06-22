@@ -8,13 +8,8 @@ using UnityEngine.InputSystem;
 public class GridController : MonoBehaviour
 {
     [SerializeField] private GridManager grid;
-
     private PlayerControl playerControl;
-
-    private float playerInput = 0;
-
-    // Current user selection for
-    private TileChoice currentSelection = TileChoice.Left;
+    private int currentTileSelection = 0;
 
     void Awake()
     {
@@ -27,36 +22,37 @@ public class GridController : MonoBehaviour
         PlayerInput();
     }
 
-    private void Update() 
-    {
-
-    }
-
     private void PlayerInput()
     {
         playerControl.Player.Move.started += OnPlayerChangedTile;
+        playerControl.Player.Rotate.started += OnPlayerRotate;
     }
 
     private void OnPlayerChangedTile(InputAction.CallbackContext context) 
     {
-        playerInput = context.ReadValue<float>();
-        currentSelection = NormalizePlayerInput(playerInput);
-        grid.SetHoveredTile(currentSelection);
+        float playerInput = context.ReadValue<float>();
+        currentTileSelection = GetNextTileFromInput(playerInput);
+        grid.SetHoveredTile(currentTileSelection);
     }
 
-    private TileChoice NormalizePlayerInput(float input)
+    private void OnPlayerRotate(InputAction.CallbackContext context) 
     {
-        var rawTile = (int)currentSelection + (int)input;
-        var typedTile = (TileChoice)rawTile;
-        List<TileChoice> tiles = Enum.GetValues(typeof(TileChoice)).Cast<TileChoice>().ToList();
+        grid.RotateGrid();
+        currentTileSelection = 0;
+    }
 
-        if(tiles.Contains(typedTile)) 
-            return typedTile;
+    private int GetNextTileFromInput(float input)
+    {
+        var nextTile = currentTileSelection + (int)input;
+        int tileCount = grid._width;
 
-        // Change tile to upper or lower bound
-        if(rawTile < 0) 
-            return tiles.Last();
-         
-        return tiles.First();
+        if(nextTile < 0) {
+            return tileCount - 1;
+        }
+
+        if(nextTile >= tileCount) {
+            return 0;
+        }
+        return nextTile;
     }
 }
