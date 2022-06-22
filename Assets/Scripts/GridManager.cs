@@ -1,12 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using System.Linq;
 using UnityEngine;
+
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+public class GridDirectionAttribute : Attribute
+{
+    public bool sortByX { get; }
+    public SortDirection sortDirection { get; }
+    public AggregateIndex aggregateIndex { get; }
+
+    public GridDirectionAttribute(
+        bool _sortByX,
+        SortDirection _sortDirection,
+        AggregateIndex _aggregateIndex
+        )
+    {
+        sortByX = _sortByX;
+        sortDirection = _sortDirection;
+        aggregateIndex = _aggregateIndex;
+    }
+}
+
+public enum SortDirection
+{
+    Ascending,
+    Descending
+}
+
+public enum AggregateIndex
+{
+    First,
+    Last
+}
 
 enum GridDirection
 {
+    [GridDirectionAttribute(_sortByX: true, _sortDirection: SortDirection.Ascending, _aggregateIndex: AggregateIndex.Last)]
     North,
-    South,
+
+    [GridDirectionAttribute(_sortByX: false, _sortDirection: SortDirection.Descending, _aggregateIndex: AggregateIndex.Last)]
     East,
+
+    [GridDirectionAttribute(_sortByX: true, _sortDirection: SortDirection.Descending, _aggregateIndex: AggregateIndex.First)]
+    South,
+
+    [GridDirectionAttribute(_sortByX: false, _sortDirection: SortDirection.Ascending, _aggregateIndex: AggregateIndex.First)]
     West
 }
 
@@ -65,51 +105,49 @@ public class GridManager : MonoBehaviour
     }
 
     public Tile GetTileFromChoice(TileChoice choice) {
-        // TODO:
-        // Using TileChoice & current GridDirection, 
-        // calculate the tile to return to the caller
-        return null;
+        var tilesList = new List<Tile>(tiles.Values);
+        var result = new List<Tile>();
+
+        // Retrieve list of relevant possible tiles
+        result = new List<Tile>(tilesList.FindAll(
+            delegate(Tile t)
+            {
+                float location = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX ? t._location.x : t._location.y;
+                int aggregateId = direction.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
+                    ? 0 : width - 1;
+                return location == aggregateId;
+            }
+        ));
+
+        // Sort the tiles by unique order
+        //result = OrderTilesByDirection(result, direction);
+        result.ForEach(i => Debug.Log("Tile result -> " + i));   
+        return result[(int)choice];
     }
 
     public void SetHoveredTile(TileChoice choice) {
-        var tilesList = new List<Tile>(tiles.Values);
-        var result = new List<Tile>();
-        switch (direction) {
-            case GridDirection.North:
-                result = new List<Tile>(tilesList.FindAll(
-                    delegate(Tile t)
-                    {
-                        return t._location.y == width - 1;
-                    }
-                ));
-                break;
+        tiles.Values.ToList().ForEach(t => t.OnHoverExit());
+        GetTileFromChoice(choice).OnHover();
+    }
 
-            case GridDirection.East:
-                result = new List<Tile>(tilesList.FindAll(
-                    delegate(Tile t)
-                    {
-                        return t._location.x == width - 1;
-                    }
-                ));
-                break;
-            case GridDirection.South:
-                result = new List<Tile>(tilesList.FindAll(
-                    delegate(Tile t)
-                    {
-                        return t._location.y == 0;
-                    }
-                ));
-                break;
-            case GridDirection.West:
-                result = new List<Tile>(tilesList.FindAll(
-                    delegate(Tile t)
-                    {
-                        return t._location.x == 0;
-                    }
-                ));
-                break;
+    private List<Tile> OrderTilesByDirection(List<Tile> tiles, GridDirection dir)
+    {
+        bool sortByX = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX;
+        SortDirection sortOrder = direction.GetAttributeOfType<GridDirectionAttribute>().sortDirection;
+
+        // Sort by x value of tile
+        if(sortByX)
+        {
+            if(sortOrder == SortDirection.Ascending)
+                return tiles.OrderBy(t => t._location.x).ToList();
+            else
+                return tiles.OrderByDescending(t => t._location.x).ToList();
         }
-        result.ForEach(i => Debug.Log("Tile result -> " + i));
-        result[(int)choice].OnHover();
+
+        // Sort by y value of tile
+        if(sortOrder == SortDirection.Ascending)
+            return tiles.OrderBy(t => t._location.y).ToList();
+        else
+            return tiles.OrderByDescending(t => t._location.y).ToList();
     }
 }
