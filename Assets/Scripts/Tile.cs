@@ -8,17 +8,20 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject highlight;
 
-    public void Init(bool isOffset)
+    public Vector2 _location;
+
+    public void Init(bool isOffset, Vector2 location)
     {
         _renderer.color = isOffset ? offsetColor : baseColor;
+        _location = location;
     }
 
-    void OnMouseEnter()
+    public void OnHover()
     {
         highlight.SetActive(true);
     }
 
-    void OnMouseExit()
+    public void OnHoverExit()
     {
         highlight.SetActive(false);
     }
