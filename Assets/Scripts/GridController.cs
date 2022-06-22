@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GridController : MonoBehaviour
 {
@@ -23,20 +24,24 @@ public class GridController : MonoBehaviour
     void Start()
     {
         playerControl.Player.Enable();
+        PlayerInput();
     }
 
     private void Update() 
     {
-        PlayerInput();
+
     }
 
     private void PlayerInput()
     {
-        playerInput = playerControl.Player.Move.ReadValue<float>();
+        playerControl.Player.Move.started += OnPlayerChangedTile;
+    }
 
-        // TODO: Update current selection - make maintainable
+    private void OnPlayerChangedTile(InputAction.CallbackContext context) 
+    {
+        playerInput = context.ReadValue<float>();
         currentSelection = NormalizePlayerInput(playerInput);
-        Debug.Log("Current selection -> " + playerInput);
+        grid.SetHoveredTile(currentSelection);
     }
 
     private TileChoice NormalizePlayerInput(float input)
