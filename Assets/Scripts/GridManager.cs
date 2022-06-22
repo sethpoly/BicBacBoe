@@ -70,7 +70,9 @@ public class GridManager : MonoBehaviour
     void Start()
     {
         GenerateGrid();
+        SetupGrid();
     }
+
 
     private void GenerateGrid()
     {
@@ -95,6 +97,11 @@ public class GridManager : MonoBehaviour
         cam.transform.position = new Vector3((float)width/2 - 0.5f, (float)height/2 - 0.5f, -10);
     }
 
+    private void SetupGrid() 
+    {
+        SetHoveredTile(TileChoice.Left);
+    }
+
     public Tile GetTileAtPosition(Vector2 pos)
     {
         if(tiles.TryGetValue(pos, out var tile)) 
@@ -104,6 +111,7 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
+    // Get tile reference from user's constrained choice
     public Tile GetTileFromChoice(TileChoice choice) {
         var tilesList = new List<Tile>(tiles.Values);
         var result = new List<Tile>();
@@ -120,16 +128,18 @@ public class GridManager : MonoBehaviour
         ));
 
         // Sort the tiles by unique order
-        //result = OrderTilesByDirection(result, direction);
+        result = OrderTilesByDirection(result, direction);
         result.ForEach(i => Debug.Log("Tile result -> " + i));   
         return result[(int)choice];
     }
 
+    // Apply hover modifier to specified tile
     public void SetHoveredTile(TileChoice choice) {
         tiles.Values.ToList().ForEach(t => t.OnHoverExit());
         GetTileFromChoice(choice).OnHover();
     }
 
+    // Order the list of tiles against current grid direction
     private List<Tile> OrderTilesByDirection(List<Tile> tiles, GridDirection dir)
     {
         bool sortByX = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX;
