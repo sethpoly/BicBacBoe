@@ -282,9 +282,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 3
-  height: 3
   tilePrefab: {fileID: 7801273289426406650, guid: 4ccb1ad72f553274e9862a48616007a4, type: 3}
   cam: {fileID: 519420032}
+  rotating: 0
+  rotateDuration: 0.5
 --- !u!4 &1360539316
 Transform:
   m_ObjectHideFlags: 0

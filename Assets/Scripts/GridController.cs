@@ -8,13 +8,8 @@ using UnityEngine.InputSystem;
 public class GridController : MonoBehaviour
 {
     [SerializeField] private GridManager grid;
-
     private PlayerControl playerControl;
-
-    private float playerInput = 0;
-
-    // Current user selection for
-    private TileChoice currentSelection = TileChoice.Left;
+    private int currentTileSelection = 0;
 
     void Awake()
     {
@@ -35,30 +30,29 @@ public class GridController : MonoBehaviour
 
     private void OnPlayerChangedTile(InputAction.CallbackContext context) 
     {
-        playerInput = context.ReadValue<float>();
-        currentSelection = NormalizePlayerInput(playerInput);
-        grid.SetHoveredTile(currentSelection);
+        float playerInput = context.ReadValue<float>();
+        currentTileSelection = GetNextTileFromInput(playerInput);
+        grid.SetHoveredTile(currentTileSelection);
     }
 
     private void OnPlayerRotate(InputAction.CallbackContext context) 
     {
         grid.RotateGrid();
-        currentSelection = TileChoice.Left;
+        currentTileSelection = 0;
     }
 
-    private TileChoice NormalizePlayerInput(float input)
+    private int GetNextTileFromInput(float input)
     {
-        var rawTile = (int)currentSelection + (int)input;
-        var typedTile = (TileChoice)rawTile;
-        List<TileChoice> tiles = Enum.GetValues(typeof(TileChoice)).Cast<TileChoice>().ToList();
+        var nextTile = currentTileSelection + (int)input;
+        int tileCount = grid._width;
 
-        if(tiles.Contains(typedTile)) 
-            return typedTile;
+        if(nextTile < 0) {
+            return tileCount - 1;
+        }
 
-        // Change tile to upper or lower bound
-        if(rawTile < 0) 
-            return tiles.Last();
-         
-        return tiles.First();
+        if(nextTile >= tileCount) {
+            return 0;
+        }
+        return nextTile;
     }
 }
