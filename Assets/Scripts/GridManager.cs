@@ -112,7 +112,7 @@ public class GridManager : MonoBehaviour
         result = new List<Tile>(tilesList.FindAll(
             delegate(Tile t)
             {
-                float location = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX ? t._location.x : t._location.y;
+                float location = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX ? t._location.y : t._location.x;
                 int aggregateId = direction.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
                     ? 0 : width - 1;
                 return location == aggregateId;
