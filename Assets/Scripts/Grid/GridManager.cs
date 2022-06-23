@@ -69,6 +69,8 @@ public class GridManager : MonoBehaviour
     }
 
 
+    // For some reason my grid is generating its x,y values backwards,
+    // I'm too lazy to figure out why -__('-')__-
     private void GenerateGrid()
     {
         tiles = new Dictionary<Vector2, Tile>();
@@ -141,7 +143,21 @@ public class GridManager : MonoBehaviour
     }
 
     // Get tile reference from user's constrained choice
+    // choice must be between 0...width
     public Tile GetTileFromChoice(int choice) {
+        return GetTileSubset(direction)[choice];
+    }
+
+    // Apply hover modifier to specified tile
+    public void SetHoveredTile(int nextTile = 0) {
+        tiles.Values.ToList().ForEach(t => t.OnHoverExit());
+        GetTileFromChoice(nextTile).OnHover();
+    }
+
+    /// Get subset of tiles against the specified grid direction
+    /// tile count returned = _width
+    private List<Tile> GetTileSubset(GridDirection direction) 
+    {
         var tilesList = new List<Tile>(tiles.Values);
         var result = new List<Tile>();
 
@@ -157,14 +173,21 @@ public class GridManager : MonoBehaviour
         ));
 
         // Sort the tiles by unique order
-        result = OrderTilesByDirection(result, direction);
-        return result[choice];
+        return OrderTilesByDirection(result, direction);
     }
 
-    // Apply hover modifier to specified tile
-    public void SetHoveredTile(int nextTile = 0) {
-        tiles.Values.ToList().ForEach(t => t.OnHoverExit());
-        GetTileFromChoice(nextTile).OnHover();
+    private GridDirection? GetDirectionFromTilePos(Tile tile)
+    {
+        foreach (GridDirection i in Enum.GetValues(typeof(GridDirection)))
+        {
+            float location = i.GetAttributeOfType<GridDirectionAttribute>().sortByX ? tile._location.y : tile._location.x;
+            int aggregateId = i.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
+                    ? 0 : width - 1;
+            if(location == aggregateId) {
+                return i;
+            }
+        }
+        return null;
     }
 
     // Order the list of tiles against current grid direction

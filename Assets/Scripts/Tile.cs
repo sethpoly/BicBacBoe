@@ -26,3 +26,25 @@ public class Tile : MonoBehaviour
         highlight.SetActive(false);
     }
 }
+
+namespace TileSpriteRender 
+{
+    enum TileOrientation
+    {
+        NorthLeftCorner,
+        NorthEdge,
+        NorthRightCorner,
+
+        EastLeftCorner,
+        EastEdge,
+        EastRightCorner,
+
+        SouthLeftCorner,
+        SouthEdge,
+        SouthRightCorner,
+
+        WestLeftCorner,
+        WestEdge,
+        WestRightCorner,
+    }
+}
