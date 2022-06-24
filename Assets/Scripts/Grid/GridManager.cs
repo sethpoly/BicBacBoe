@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine;
+using TileSpriteRender;
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
 public class GridDirectionAttribute : Attribute
@@ -84,7 +85,7 @@ public class GridManager : MonoBehaviour
                 // Alternate color
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 Vector2 location = new Vector2(x,y);
-                spawnedTitle.Init(isOffset, location);
+                spawnedTitle.Init(isOffset, location, GetTileOrientationFromPos(location));
 
                 // Append to dict
                 tiles[location] = spawnedTitle;
@@ -176,11 +177,11 @@ public class GridManager : MonoBehaviour
         return OrderTilesByDirection(result, direction);
     }
 
-    private GridDirection? GetDirectionFromTilePos(Tile tile)
+    private GridDirection? GetDirectionFromTilePos(Vector2 pos)
     {
         foreach (GridDirection i in Enum.GetValues(typeof(GridDirection)))
         {
-            float location = i.GetAttributeOfType<GridDirectionAttribute>().sortByX ? tile._location.y : tile._location.x;
+            float location = i.GetAttributeOfType<GridDirectionAttribute>().sortByX ? pos.y : pos.x;
             int aggregateId = i.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
                     ? 0 : width - 1;
             if(location == aggregateId) {
@@ -188,6 +189,43 @@ public class GridManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private TileOrientation GetTileOrientationFromPos(Vector2 pos) 
+    {
+        GridDirection? dir = GetDirectionFromTilePos(pos);
+        if(dir.HasValue)
+        {
+            bool sortByX = dir.GetAttributeOfType<GridDirectionAttribute>().sortByX;
+            switch(dir)
+            {
+                case GridDirection.North:
+                    if(pos.x == 0) 
+                        return TileOrientation.NorthLeftCorner;
+                    if(pos.x == width - 1)
+                        return TileOrientation.NorthRightCorner;
+                    return TileOrientation.NorthEdge;
+                case GridDirection.East:
+                    if(pos.y == width - 1)
+                        return TileOrientation.EastLeftCorner;
+                    if(pos.y == 0)
+                        return TileOrientation.EastRightCorner;
+                    return TileOrientation.EastEdge;
+                case GridDirection.South:
+                    if(pos.x == width - 1)
+                        return TileOrientation.SouthLeftCorner;
+                    if(pos.x == 0)
+                        return TileOrientation.SouthRightCorner;
+                    return TileOrientation.SouthEdge;
+                case GridDirection.West:
+                    if(pos.y == 0)
+                        return TileOrientation.WestLeftCorner;
+                    if(pos.y == width - 1)
+                        return TileOrientation.WestRightCorner;
+                    return TileOrientation.WestEdge;
+            }
+        }
+        return TileOrientation.Center;
     }
 
     // Order the list of tiles against current grid direction

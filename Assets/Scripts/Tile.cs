@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using TileSpriteRender;
 
 public class Tile : MonoBehaviour
 {
@@ -8,12 +8,45 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject highlight;
 
-    public Vector2 _location;
+    [SerializeField] private Sprite edgeSprite;
+    [SerializeField] private Sprite cornerSprite;
+    [SerializeField] private Sprite centerSprite;
 
-    public void Init(bool isOffset, Vector2 location)
+    public Vector2 _location { get; private set; }
+    [SerializeField] private TileOrientation startingOrientation;
+
+    public void Init(bool isOffset, Vector2 location, TileOrientation tileOrientation)
     {
         _renderer.color = isOffset ? offsetColor : baseColor;
         _location = location;
+        startingOrientation = tileOrientation;
+
+        SetSprite(startingOrientation);
+    }
+
+    private void SetSprite(TileOrientation tileOrientation)
+    {
+        switch(tileOrientation)
+        {
+            case TileOrientation.NorthLeftCorner:
+            case TileOrientation.EastLeftCorner:
+            case TileOrientation.SouthLeftCorner:
+            case TileOrientation.WestLeftCorner:
+            case TileOrientation.NorthRightCorner:
+            case TileOrientation.EastRightCorner:
+            case TileOrientation.SouthRightCorner:
+            case TileOrientation.WestRightCorner:
+            _renderer.sprite = cornerSprite;
+             break;
+            case TileOrientation.Center:
+            _renderer.sprite = centerSprite;
+            break;
+            default:
+            _renderer.sprite = edgeSprite;
+            break;
+        }
+
+        transform.Rotate(0, 0, tileOrientation.GetAttributeOfType<TileSpriteRotation>().rotation);
     }
 
     public void OnHover()
@@ -29,22 +62,59 @@ public class Tile : MonoBehaviour
 
 namespace TileSpriteRender 
 {
-    enum TileOrientation
+    public enum TileOrientation
     {
+
+        [TileSpriteRotation(0)] 
         NorthLeftCorner,
+
+        [TileSpriteRotation(0)]
         NorthEdge,
+
+        [TileSpriteRotation(270)]
         NorthRightCorner,
 
+        [TileSpriteRotation(270)]
         EastLeftCorner,
+
+        [TileSpriteRotation(270)]
         EastEdge,
+
+        [TileSpriteRotation(180)]
         EastRightCorner,
 
+        [TileSpriteRotation(0)]
+        Center,
+
+        [TileSpriteRotation(90)]
         SouthLeftCorner,
+
+        [TileSpriteRotation(180)]
         SouthEdge,
+
+        [TileSpriteRotation(90)]
         SouthRightCorner,
 
+        [TileSpriteRotation(90)]
         WestLeftCorner,
+
+        [TileSpriteRotation(90)]
         WestEdge,
+
+        [TileSpriteRotation(180)]
         WestRightCorner,
     }
+
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+    public class TileSpriteRotation : Attribute
+    {
+        public float rotation { get; }
+
+        public TileSpriteRotation(float _rotation)
+        {
+            rotation = _rotation;
+        }
+    }
 }
+
+
