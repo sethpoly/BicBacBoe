@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GridController : MonoBehaviour
+public class PlayerTacController : MonoBehaviour
 {
     [SerializeField] private GridManager grid;
     private PlayerControl playerControl;
@@ -28,6 +28,7 @@ public class GridController : MonoBehaviour
         playerControl.Player.Rotate.started += OnPlayerRotate;
     }
 
+    /// Changing tile hover selection
     private void OnPlayerChangedTile(InputAction.CallbackContext context) 
     {
         float playerInput = context.ReadValue<float>();
@@ -35,10 +36,17 @@ public class GridController : MonoBehaviour
         grid.SetHoveredTile(currentTileSelection);
     }
 
+    /// Request to rotate grid
     private void OnPlayerRotate(InputAction.CallbackContext context) 
     {
         grid.RotateGrid();
         currentTileSelection = 0;
+    }
+
+    /// Request to play an action
+    private void OnPlayerAction(InputAction.CallbackContext context) 
+    {
+        // TODO: 
     }
 
     private int GetNextTileFromInput(float input)

@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pieces;
+
+namespace Pieces {
+    public enum PieceType
+    {
+        Exe,
+        Oh
+    }
+}
 
 public class Piece : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private SpriteRenderer _renderer;
+    [SerializeField] private Tile associatedTile;
+    [SerializeField] private PieceType type;
+
+    public void Init(Tile _associatedTile, PieceType _type)
     {
-        
+        associatedTile = _associatedTile;
+        type = _type;
+        transform.SetParent(associatedTile.transform);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

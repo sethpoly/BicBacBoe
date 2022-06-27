@@ -51,7 +51,7 @@ enum GridDirection
     West
 }
 
-public class GridManager : MonoBehaviour
+public abstract class GridManager : MonoBehaviour
 {
     public int _width { get { return width; } private set { _width = value; } }
     [SerializeField] private int width;
@@ -249,4 +249,6 @@ public class GridManager : MonoBehaviour
         else
             return tiles.OrderByDescending(t => t._location.y).ToList();
     }
+
+    public abstract bool CheckWinCondition();
 }
