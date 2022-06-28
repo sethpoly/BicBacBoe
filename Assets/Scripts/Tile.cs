@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
 
     public Vector2 _location { get; private set; }
     [SerializeField] private TileOrientation startingOrientation;
+    [SerializeField] public Piece associatedPiece { get; private set; }
 
     public void Init(bool isOffset, Vector2 location, TileOrientation tileOrientation)
     {
@@ -57,6 +58,11 @@ public class Tile : MonoBehaviour
     public void OnHoverExit()
     {
         highlight.SetActive(false);
+    }
+
+    public void SetAssociatedPiece(Piece piece)
+    {
+        associatedPiece = piece;
     }
 }
 

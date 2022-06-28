@@ -97,3 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5633b3c11d990c439661e3a71f28654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _renderer: {fileID: 6774389111646711006}
+  _playerSprite: {fileID: 21300000, guid: c78b1e987401a9543a5020052a50a06e, type: 3}
+  _cpuSprite: {fileID: 21300000, guid: 2b37831c066de1047872a66601c54b69, type: 3}
+  associatedTile: {fileID: 0}
+  type: 0

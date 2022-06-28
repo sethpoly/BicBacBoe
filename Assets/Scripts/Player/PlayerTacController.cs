@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerTacController : MonoBehaviour
 {
-    [SerializeField] private GridManager grid;
+    [SerializeField] private TacGridManager grid;
     private PlayerControl playerControl;
     private int currentTileSelection = 0;
 
@@ -26,6 +26,7 @@ public class PlayerTacController : MonoBehaviour
     {
         playerControl.Player.Move.started += OnPlayerChangedTile;
         playerControl.Player.Rotate.started += OnPlayerRotate;
+        playerControl.Player.PlacePiece.started += OnPlayerAction;
     }
 
     /// Changing tile hover selection
@@ -46,7 +47,7 @@ public class PlayerTacController : MonoBehaviour
     /// Request to play an action
     private void OnPlayerAction(InputAction.CallbackContext context) 
     {
-        // TODO: 
+        grid.PlacePieceAtLocation(currentTileSelection, Pieces.PieceType.Exe);
     }
 
     private int GetNextTileFromInput(float input)

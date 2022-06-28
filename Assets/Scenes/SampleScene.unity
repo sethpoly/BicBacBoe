@@ -286,6 +286,7 @@ MonoBehaviour:
   cam: {fileID: 519420032}
   rotating: 0
   rotateDuration: 0.2
+  piecePrefab: {fileID: 6774389111646711007, guid: c283c96e19202234e8bb4f58fa306087, type: 3}
 --- !u!4 &1360539316
 Transform:
   m_ObjectHideFlags: 0
