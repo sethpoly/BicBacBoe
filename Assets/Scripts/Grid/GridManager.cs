@@ -36,7 +36,7 @@ public enum AggregateIndex
     Last
 }
 
-enum GridDirection
+public enum GridDirection
 {
     [GridDirectionAttribute(_sortByX: true, _sortDirection: SortDirection.Ascending, _aggregateIndex: AggregateIndex.Last)]
     North,
@@ -59,7 +59,8 @@ public abstract class GridManager : MonoBehaviour
     [SerializeField] private Transform cam;
 
     public Dictionary<Vector2, Tile> tiles { get; private set; }
-    private GridDirection direction = GridDirection.North;
+    public GridDirection _direction { get { return direction; } private set { _direction = value; } }
+    [SerializeField] private GridDirection direction = GridDirection.North;
     [SerializeField] private Boolean rotating = false;
     [SerializeField] private float rotateDuration = 0.5f;
     
@@ -98,7 +99,7 @@ public abstract class GridManager : MonoBehaviour
 
     private void SetupGrid() 
     {
-        SetHoveredTile(0);
+        SetHoveredTile(tiles.Keys.ToList().First());
 
         // Update pivot to be middle tile
         Vector3 centerTilePos = tiles.Values.ToList()[tiles.Count / 2].transform.position;
@@ -114,7 +115,7 @@ public abstract class GridManager : MonoBehaviour
         {
             direction = direction.Next();
             StartCoroutine(Rotate90());
-            SetHoveredTile();
+            //SetHoveredTile();
         }
     }
 
@@ -149,10 +150,17 @@ public abstract class GridManager : MonoBehaviour
         return GetTileSubset(direction)[choice];
     }
 
+    public Tile GetTileFromRaw(int raw) 
+    {
+        return tiles.Values.ToList()[raw];
+    }
+
     // Apply hover modifier to specified tile
-    public void SetHoveredTile(int nextTile = 0) {
+    public void SetHoveredTile(Vector2 nextTile) {
         tiles.Values.ToList().ForEach(t => t.OnHoverExit());
-        GetTileFromChoice(nextTile).OnHover();
+        GetTileAtPosition(nextTile).OnHover();
+        //GetTileFromRaw(nextTile).OnHover();
+        //GetTileFromChoice(nextTile).OnHover();
     }
 
     /// Get subset of tiles against the specified grid direction
@@ -170,6 +178,29 @@ public abstract class GridManager : MonoBehaviour
                 int aggregateId = direction.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
                     ? 0 : width - 1;
                 return location == aggregateId;
+            }
+        ));
+
+        // Sort the tiles by unique order
+        return OrderTilesByDirection(result, direction);
+    }
+
+        /// Get subset of tiles against the specified grid direction
+    /// tile count returned = _width
+    public List<Tile> GetTileSubset(GridDirection direction, Vector2 currentTile) 
+    {
+        var tilesList = new List<Tile>(tiles.Values);
+        var result = new List<Tile>();
+
+        // Retrieve list of relevant possible tiles
+        result = new List<Tile>(tilesList.FindAll(
+            delegate(Tile t)
+            {
+                float location = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX ? t._location.y : t._location.x;
+                //int aggregateId = direction.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
+                    //? 0 : width - 1;
+                //return location == //aggregateId;
+                return t._location.x == currentTile.x;
             }
         ));
 

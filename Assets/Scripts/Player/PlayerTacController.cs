@@ -9,7 +9,9 @@ public class PlayerTacController : MonoBehaviour
 {
     [SerializeField] private TacGridManager grid;
     private PlayerControl playerControl;
-    private int currentTileSelection = 0;
+    [SerializeField] private int currentTileSelection = 0;
+
+    private Vector2 currentTile;
 
     void Awake()
     {
@@ -18,6 +20,7 @@ public class PlayerTacController : MonoBehaviour
 
     void Start()
     {
+        currentTile = new Vector2(0, 0);
         playerControl.Player.Enable();
         PlayerInput();
     }
@@ -33,15 +36,19 @@ public class PlayerTacController : MonoBehaviour
     private void OnPlayerChangedTile(InputAction.CallbackContext context) 
     {
         float playerInput = context.ReadValue<float>();
-        currentTileSelection = GetNextTileFromInput(playerInput);
-        grid.SetHoveredTile(currentTileSelection);
+        //currentTileSelection = GetNextTileFromInput(playerInput, grid._direction);
+
+        var possibleTiles = grid.GetTileSubset(grid._direction, currentTile);
+        int _cIndex = possibleTiles.FindIndex(t => t._location == currentTile);
+        currentTile = possibleTiles[GetNextTileFromInput(_cIndex)]._location;
+        grid.SetHoveredTile(currentTile);
     }
 
     /// Request to rotate grid
     private void OnPlayerRotate(InputAction.CallbackContext context) 
     {
         grid.RotateGrid();
-        currentTileSelection = 0;
+        //currentTileSelection = GetNextTileFromInput(currentTileSelection + grid._width);
     }
 
     /// Request to play an action
