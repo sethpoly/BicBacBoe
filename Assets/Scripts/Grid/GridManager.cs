@@ -246,5 +246,5 @@ public abstract class GridManager : MonoBehaviour
             return tiles.OrderByDescending(t => t._location.y).ToList();
     }
 
-    public abstract bool CheckWinCondition();
+    public abstract bool CheckWinCondition(Vector2 lastPlacedPiecePos);
 }
