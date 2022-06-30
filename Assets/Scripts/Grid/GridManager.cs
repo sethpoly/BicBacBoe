@@ -36,7 +36,7 @@ public enum AggregateIndex
     Last
 }
 
-enum GridDirection
+public enum GridDirection
 {
     [GridDirectionAttribute(_sortByX: true, _sortDirection: SortDirection.Ascending, _aggregateIndex: AggregateIndex.Last)]
     North,
@@ -51,7 +51,7 @@ enum GridDirection
     West
 }
 
-public class GridManager : MonoBehaviour
+public abstract class GridManager : MonoBehaviour
 {
     public int _width { get { return width; } private set { _width = value; } }
     [SerializeField] private int width;
@@ -59,7 +59,8 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Transform cam;
 
     public Dictionary<Vector2, Tile> tiles { get; private set; }
-    private GridDirection direction = GridDirection.North;
+    public GridDirection _direction { get { return direction; } private set { _direction = value; } }
+    [SerializeField] private GridDirection direction = GridDirection.North;
     [SerializeField] private Boolean rotating = false;
     [SerializeField] private float rotateDuration = 0.5f;
     
@@ -98,7 +99,7 @@ public class GridManager : MonoBehaviour
 
     private void SetupGrid() 
     {
-        SetHoveredTile(0);
+        SetHoveredTile(tiles.Keys.ToList().First());
 
         // Update pivot to be middle tile
         Vector3 centerTilePos = tiles.Values.ToList()[tiles.Count / 2].transform.position;
@@ -114,7 +115,6 @@ public class GridManager : MonoBehaviour
         {
             direction = direction.Next();
             StartCoroutine(Rotate90());
-            SetHoveredTile();
         }
     }
 
@@ -143,21 +143,18 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    // Get tile reference from user's constrained choice
-    // choice must be between 0...width
-    public Tile GetTileFromChoice(int choice) {
-        return GetTileSubset(direction)[choice];
-    }
 
     // Apply hover modifier to specified tile
-    public void SetHoveredTile(int nextTile = 0) {
+    public void SetHoveredTile(Vector2 nextTile) {
         tiles.Values.ToList().ForEach(t => t.OnHoverExit());
-        GetTileFromChoice(nextTile).OnHover();
+        GetTileAtPosition(nextTile).OnHover();
     }
 
-    /// Get subset of tiles against the specified grid direction
-    /// tile count returned = _width
-    private List<Tile> GetTileSubset(GridDirection direction) 
+    /// <summary>
+    /// Get subset of <c>Tile</c> against the specified grid direction
+    /// - tile count returned = _width
+    /// </summary>
+    public List<Tile> GetTileSubset(GridDirection direction, Vector2 currentTile) 
     {
         var tilesList = new List<Tile>(tiles.Values);
         var result = new List<Tile>();
@@ -166,10 +163,9 @@ public class GridManager : MonoBehaviour
         result = new List<Tile>(tilesList.FindAll(
             delegate(Tile t)
             {
-                float location = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX ? t._location.y : t._location.x;
-                int aggregateId = direction.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
-                    ? 0 : width - 1;
-                return location == aggregateId;
+                if(direction.GetAttributeOfType<GridDirectionAttribute>().sortByX)
+                    return t._location.y == currentTile.y;
+                return t._location.x == currentTile.x;
             }
         ));
 
@@ -249,4 +245,6 @@ public class GridManager : MonoBehaviour
         else
             return tiles.OrderByDescending(t => t._location.y).ToList();
     }
+
+    public abstract bool CheckWinCondition();
 }
