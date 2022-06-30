@@ -15,9 +15,9 @@ public class TacGridManager : GridManager
         return false;
     }
 
-    public void PlacePieceAtLocation(int location, PieceType type)
+    public void PlacePieceAtLocation(Vector2 tileLocation, PieceType type)
     {
-        Tile tile = GetTileFromChoice(location);
+        Tile tile = GetTileAtPosition(tileLocation);
 
         if(tile.associatedPiece == null)
         {

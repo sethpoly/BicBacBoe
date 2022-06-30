@@ -143,43 +143,11 @@ public abstract class GridManager : MonoBehaviour
         return null;
     }
 
-    // Get tile reference from user's constrained choice
-    // choice must be between 0...width
-    public Tile GetTileFromChoice(int choice) {
-        return GetTileSubset(direction)[choice];
-    }
-
-    public Tile GetTileFromRaw(int raw) 
-    {
-        return tiles.Values.ToList()[raw];
-    }
 
     // Apply hover modifier to specified tile
     public void SetHoveredTile(Vector2 nextTile) {
         tiles.Values.ToList().ForEach(t => t.OnHoverExit());
         GetTileAtPosition(nextTile).OnHover();
-    }
-
-    /// Get subset of tiles against the specified grid direction
-    /// tile count returned = _width
-    private List<Tile> GetTileSubset(GridDirection direction) 
-    {
-        var tilesList = new List<Tile>(tiles.Values);
-        var result = new List<Tile>();
-
-        // Retrieve list of relevant possible tiles
-        result = new List<Tile>(tilesList.FindAll(
-            delegate(Tile t)
-            {
-                float location = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX ? t._location.y : t._location.x;
-                int aggregateId = direction.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
-                    ? 0 : width - 1;
-                return location == aggregateId;
-            }
-        ));
-
-        // Sort the tiles by unique order
-        return OrderTilesByDirection(result, direction);
     }
 
     /// <summary>

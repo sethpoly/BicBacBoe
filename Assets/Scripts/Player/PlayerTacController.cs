@@ -9,7 +9,6 @@ public class PlayerTacController : MonoBehaviour
 {
     [SerializeField] private TacGridManager grid;
     private PlayerControl playerControl;
-    [SerializeField] private int currentTileSelection = 0; // May not be needed
     [SerializeField] private Vector2 currentTile;
 
     void Awake()
@@ -54,7 +53,7 @@ public class PlayerTacController : MonoBehaviour
     /// Request to play an action
     private void OnPlayerAction(InputAction.CallbackContext context) 
     {
-        grid.PlacePieceAtLocation(currentTileSelection, Pieces.PieceType.Exe);
+        grid.PlacePieceAtLocation(currentTile, Pieces.PieceType.Exe);
     }
 
     private int GetNextTileFromInput(int currentTileIndex, float input)
