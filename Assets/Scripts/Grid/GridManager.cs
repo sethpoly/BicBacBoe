@@ -115,7 +115,6 @@ public abstract class GridManager : MonoBehaviour
         {
             direction = direction.Next();
             StartCoroutine(Rotate90());
-            //SetHoveredTile();
         }
     }
 
@@ -159,8 +158,6 @@ public abstract class GridManager : MonoBehaviour
     public void SetHoveredTile(Vector2 nextTile) {
         tiles.Values.ToList().ForEach(t => t.OnHoverExit());
         GetTileAtPosition(nextTile).OnHover();
-        //GetTileFromRaw(nextTile).OnHover();
-        //GetTileFromChoice(nextTile).OnHover();
     }
 
     /// Get subset of tiles against the specified grid direction
@@ -185,8 +182,10 @@ public abstract class GridManager : MonoBehaviour
         return OrderTilesByDirection(result, direction);
     }
 
-        /// Get subset of tiles against the specified grid direction
-    /// tile count returned = _width
+    /// <summary>
+    /// Get subset of <c>Tile</c> against the specified grid direction
+    /// - tile count returned = _width
+    /// </summary>
     public List<Tile> GetTileSubset(GridDirection direction, Vector2 currentTile) 
     {
         var tilesList = new List<Tile>(tiles.Values);
@@ -196,10 +195,8 @@ public abstract class GridManager : MonoBehaviour
         result = new List<Tile>(tilesList.FindAll(
             delegate(Tile t)
             {
-                float location = direction.GetAttributeOfType<GridDirectionAttribute>().sortByX ? t._location.y : t._location.x;
-                //int aggregateId = direction.GetAttributeOfType<GridDirectionAttribute>().aggregateIndex == AggregateIndex.First
-                    //? 0 : width - 1;
-                //return location == //aggregateId;
+                if(direction.GetAttributeOfType<GridDirectionAttribute>().sortByX)
+                    return t._location.y == currentTile.y;
                 return t._location.x == currentTile.x;
             }
         ));

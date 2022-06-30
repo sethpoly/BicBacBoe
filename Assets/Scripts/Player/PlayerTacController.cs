@@ -9,9 +9,8 @@ public class PlayerTacController : MonoBehaviour
 {
     [SerializeField] private TacGridManager grid;
     private PlayerControl playerControl;
-    [SerializeField] private int currentTileSelection = 0;
-
-    private Vector2 currentTile;
+    [SerializeField] private int currentTileSelection = 0; // May not be needed
+    [SerializeField] private Vector2 currentTile;
 
     void Awake()
     {
@@ -36,11 +35,13 @@ public class PlayerTacController : MonoBehaviour
     private void OnPlayerChangedTile(InputAction.CallbackContext context) 
     {
         float playerInput = context.ReadValue<float>();
-        //currentTileSelection = GetNextTileFromInput(playerInput, grid._direction);
+        if(playerInput == 0) { return; }
 
-        var possibleTiles = grid.GetTileSubset(grid._direction, currentTile);
-        int _cIndex = possibleTiles.FindIndex(t => t._location == currentTile);
-        currentTile = possibleTiles[GetNextTileFromInput(_cIndex)]._location;
+        var _possibleTiles = grid.GetTileSubset(grid._direction, currentTile);
+        int _currentTileIndex = _possibleTiles.FindIndex(t => t._location == currentTile);
+        int _nextTileIndex = GetNextTileFromInput(_currentTileIndex, playerInput);
+
+        currentTile = _possibleTiles[_nextTileIndex]._location;
         grid.SetHoveredTile(currentTile);
     }
 
@@ -48,7 +49,6 @@ public class PlayerTacController : MonoBehaviour
     private void OnPlayerRotate(InputAction.CallbackContext context) 
     {
         grid.RotateGrid();
-        //currentTileSelection = GetNextTileFromInput(currentTileSelection + grid._width);
     }
 
     /// Request to play an action
@@ -57,9 +57,9 @@ public class PlayerTacController : MonoBehaviour
         grid.PlacePieceAtLocation(currentTileSelection, Pieces.PieceType.Exe);
     }
 
-    private int GetNextTileFromInput(float input)
+    private int GetNextTileFromInput(int currentTileIndex, float input)
     {
-        var nextTile = currentTileSelection + (int)input;
+        var nextTile = currentTileIndex + (int)input;
         int tileCount = grid._width;
 
         if(nextTile < 0) {
