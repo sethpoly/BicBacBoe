@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.64705884}
+  m_Color: {r: 0.26380572, g: 0.49056602, b: 0.20131719, a: 0.64705884}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -190,7 +190,6 @@ MonoBehaviour:
   edgeSprite: {fileID: 21300000, guid: 9fcc66422554c924294b5126158e1db2, type: 3}
   cornerSprite: {fileID: 21300000, guid: f123c57ca73565f48838e598a31b5f78, type: 3}
   centerSprite: {fileID: 21300000, guid: 479a0f8c71ea036488ffdc2fbb39546e, type: 3}
-  _location: {x: 0, y: 0}
   startingOrientation: 0
 --- !u!61 &6664846777240972832
 BoxCollider2D:
