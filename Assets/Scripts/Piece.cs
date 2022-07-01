@@ -7,7 +7,8 @@ namespace Pieces {
     public enum PieceType
     {
         Exe,
-        Oh
+        Oh,
+        None
     }
 }
 
@@ -17,7 +18,7 @@ public class Piece : MonoBehaviour
     [SerializeField] private Sprite _playerSprite;
     [SerializeField] private Sprite _cpuSprite;
     [SerializeField] private Tile associatedTile;
-    [SerializeField] private PieceType type;
+    public PieceType type { get; private set; } = PieceType.None;
 
     public void Init(Tile _associatedTile, PieceType _type)
     {
@@ -25,7 +26,7 @@ public class Piece : MonoBehaviour
         type = _type;
         transform.SetParent(associatedTile.transform);
 
-        SetSprite(type);
+        SetSprite(_type);
     }
 
     private void SetSprite(PieceType pieceType)
