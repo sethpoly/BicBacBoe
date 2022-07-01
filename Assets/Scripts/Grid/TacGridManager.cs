@@ -7,37 +7,33 @@ using Pieces;
 /// and win condition checking
 public class TacGridManager : GridManager
 {
+    [SerializeField] public Piece piecePrefab;
 
-    [SerializeField] Piece piecePrefab;
-
-    override public bool CheckWinCondition(Vector2 lastPlacedPiecePos)
+    public PossibleWinner CheckWinCondition(Tile lastTilePlaced)
     {
-        var col = 0;
-        var row = 0;
-        var diag = 0;
-        var rdiag = 0;
-        var winner = false;
-
+        PieceType pieceTypeToCheck = lastTilePlaced.associatedPiece.type;
+        int col, row, diag, rdiag;
+        col = row = diag = rdiag = 0;
 
         for(int i = 0; i < _width; i++)
         {
-            Piece nextColPiece = tiles[new Vector2(lastPlacedPiecePos.x, i)].associatedPiece;
+            Piece nextColPiece = tiles[new Vector2(lastTilePlaced._location.x, i)].associatedPiece;
             if(nextColPiece != null) {
-                if(nextColPiece.type == PieceType.Exe) {
+                if(nextColPiece.type == pieceTypeToCheck) {
                     col++;
                 }
             }
 
-            Piece nextRowPiece = tiles[new Vector2(i, lastPlacedPiecePos.y)].associatedPiece;
+            Piece nextRowPiece = tiles[new Vector2(i, lastTilePlaced._location.y)].associatedPiece;
             if(nextRowPiece != null) {
-                if(nextRowPiece.type == PieceType.Exe) {
+                if(nextRowPiece.type == pieceTypeToCheck) {
                     row++;
                 }
             }
 
             Piece nextDiagPiece = tiles[new Vector2(i, i)].associatedPiece;
             if(nextDiagPiece != null) {
-                if(nextDiagPiece.type == PieceType.Exe) {
+                if(nextDiagPiece.type == pieceTypeToCheck) {
                     diag++;
                 }
             }
@@ -45,16 +41,16 @@ public class TacGridManager : GridManager
 
             Piece nextRdiagPiece = tiles[new Vector2(i, _width - (i + 1))].associatedPiece;
             if(nextRdiagPiece != null) {
-                if(nextRdiagPiece.type == PieceType.Exe) {
+                if(nextRdiagPiece.type == pieceTypeToCheck) {
                     rdiag++;
                 }
             }
         }
 
         if(row == _width || col == _width || diag == _width || rdiag == _width) 
-            winner = true;
+            return new PossibleWinner(_didWin: true, _pieceType: pieceTypeToCheck);
         
-        return winner;
+        return new PossibleWinner();
     }
 
     public void PlacePieceAtLocation(Vector2 tileLocation, PieceType type)
@@ -66,7 +62,7 @@ public class TacGridManager : GridManager
             Piece spawnedPiece = Instantiate(piecePrefab, tile.transform.position, Quaternion.identity);
             spawnedPiece.Init(tile, type);
             tile.SetAssociatedPiece(spawnedPiece);
-            Debug.Log("Winner? -> " + CheckWinCondition(tile._location));
+            Debug.Log("Winner? -> " + CheckWinCondition(tile).ToString());
         } else 
         {
             Debug.Log("Oops, Tile position occupied.");
