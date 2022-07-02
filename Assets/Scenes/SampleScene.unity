@@ -252,6 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 1360539315}
+  currentTile: {x: 0, y: 0}
 --- !u!1 &1360539314
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,6 +263,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1360539316}
   - component: {fileID: 1360539315}
+  - component: {fileID: 1360539317}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -281,9 +283,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc4e7e2f4f814c49a45b9f6cf64ca16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 3
+  width: 5
   tilePrefab: {fileID: 7801273289426406650, guid: 4ccb1ad72f553274e9862a48616007a4, type: 3}
   cam: {fileID: 519420032}
+  direction: 0
   rotating: 0
   rotateDuration: 0.2
   piecePrefab: {fileID: 6774389111646711007, guid: c283c96e19202234e8bb4f58fa306087, type: 3}
@@ -302,3 +305,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1360539317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360539314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce9d79ea79503c4f842d18c6e168473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shake_speed: 10
+  originPosition: {x: 0, y: 0, z: 0}
+  isShaking: 0
+  shakeTimer: 0
+  shakeAmount: 0.2
+  shakeSpeed: 30

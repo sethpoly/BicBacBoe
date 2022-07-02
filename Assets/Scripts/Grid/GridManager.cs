@@ -51,7 +51,7 @@ public enum GridDirection
     West
 }
 
-public abstract class GridManager : MonoBehaviour
+public abstract class GridManager : MonoBehaviour, IShakeable
 {
     public int _width { get { return width; } private set { _width = value; } }
     [SerializeField] private int width;
@@ -63,13 +63,13 @@ public abstract class GridManager : MonoBehaviour
     [SerializeField] private GridDirection direction = GridDirection.North;
     [SerializeField] private Boolean rotating = false;
     [SerializeField] private float rotateDuration = 0.5f;
-    
+    public ShakeBehaviour shakeBehaviour { get; set; }
 
     void Start()
     {
+        shakeBehaviour = GetComponent<ShakeBehaviour>();
         GenerateGrid();
     }
-
 
     // For some reason my grid is generating its x,y values backwards,
     // I'm too lazy to figure out why -__('-')__-
@@ -245,4 +245,6 @@ public abstract class GridManager : MonoBehaviour
         else
             return tiles.OrderByDescending(t => t._location.y).ToList();
     }
+
+    public abstract void IllegalAction();
 }
