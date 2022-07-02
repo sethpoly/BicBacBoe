@@ -9,6 +9,34 @@ public class TacGridManager : GridManager
 {
     [SerializeField] public Piece piecePrefab;
 
+    /// <summary>
+    /// When the player attempts an illegal move or action, punish him!
+    /// </summary>
+    override public void IllegalAction()
+    {
+        shakeBehaviour.ShakeForTime(timeInSeconds: .15f, () => {
+            Debug.Log("Shaking finished!");
+        });
+    }
+
+    public void PlacePieceAtLocation(Vector2 tileLocation, PieceType type)
+    {
+        Tile tile = GetTileAtPosition(tileLocation);
+
+        if(tile.associatedPiece == null)
+        {
+            Piece spawnedPiece = Instantiate(piecePrefab, tile.transform.position, Quaternion.identity);
+            spawnedPiece.Init(tile, type);
+            tile.SetAssociatedPiece(spawnedPiece);
+            PossibleWinner possibleWinner = CheckWinCondition(tile);
+            Debug.Log("Winner? -> " + possibleWinner.ToString());
+        } else 
+        {
+            Debug.Log("Oops, Tile position occupied.");
+            IllegalAction();
+        }
+    }
+
     public PossibleWinner CheckWinCondition(Tile lastTilePlaced)
     {
         PieceType pieceTypeToCheck = lastTilePlaced.associatedPiece.type;
@@ -51,21 +79,5 @@ public class TacGridManager : GridManager
             return new PossibleWinner(_didWin: true, _pieceType: pieceTypeToCheck);
         
         return new PossibleWinner();
-    }
-
-    public void PlacePieceAtLocation(Vector2 tileLocation, PieceType type)
-    {
-        Tile tile = GetTileAtPosition(tileLocation);
-
-        if(tile.associatedPiece == null)
-        {
-            Piece spawnedPiece = Instantiate(piecePrefab, tile.transform.position, Quaternion.identity);
-            spawnedPiece.Init(tile, type);
-            tile.SetAssociatedPiece(spawnedPiece);
-            Debug.Log("Winner? -> " + CheckWinCondition(tile).ToString());
-        } else 
-        {
-            Debug.Log("Oops, Tile position occupied.");
-        }
     }
 }

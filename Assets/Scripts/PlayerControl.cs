@@ -53,6 +53,15 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Tap"",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""IllegalAction"",
+                    ""type"": ""Value"",
+                    ""id"": ""3329be9c-4370-49aa-ae00-b8fef0d727a9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -110,6 +119,50 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""action"": ""PlacePiece"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb656f17-c291-4c1f-a102-adab11083571"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IllegalAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8de4fa00-6d60-4874-b103-665d4370a0ca"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IllegalAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43f40dfa-091e-44df-ab29-ba8d23392f77"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IllegalAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e48f32b1-30af-4146-90cd-3df53e0902eb"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IllegalAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -121,6 +174,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
         m_Player_PlacePiece = m_Player.FindAction("PlacePiece", throwIfNotFound: true);
+        m_Player_IllegalAction = m_Player.FindAction("IllegalAction", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,6 +237,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Rotate;
     private readonly InputAction m_Player_PlacePiece;
+    private readonly InputAction m_Player_IllegalAction;
     public struct PlayerActions
     {
         private @PlayerControl m_Wrapper;
@@ -190,6 +245,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
         public InputAction @PlacePiece => m_Wrapper.m_Player_PlacePiece;
+        public InputAction @IllegalAction => m_Wrapper.m_Player_IllegalAction;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -208,6 +264,9 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 @PlacePiece.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlacePiece;
                 @PlacePiece.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlacePiece;
                 @PlacePiece.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlacePiece;
+                @IllegalAction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIllegalAction;
+                @IllegalAction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIllegalAction;
+                @IllegalAction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIllegalAction;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -221,6 +280,9 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 @PlacePiece.started += instance.OnPlacePiece;
                 @PlacePiece.performed += instance.OnPlacePiece;
                 @PlacePiece.canceled += instance.OnPlacePiece;
+                @IllegalAction.started += instance.OnIllegalAction;
+                @IllegalAction.performed += instance.OnIllegalAction;
+                @IllegalAction.canceled += instance.OnIllegalAction;
             }
         }
     }
@@ -230,5 +292,6 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
         void OnPlacePiece(InputAction.CallbackContext context);
+        void OnIllegalAction(InputAction.CallbackContext context);
     }
 }

@@ -28,6 +28,7 @@ public class PlayerTacController : MonoBehaviour
         playerControl.Player.Move.started += OnPlayerChangedTile;
         playerControl.Player.Rotate.started += OnPlayerRotate;
         playerControl.Player.PlacePiece.started += OnPlayerAction;
+        playerControl.Player.IllegalAction.started += OnIllegalAction;
     }
 
     /// Changing tile hover selection
@@ -54,6 +55,11 @@ public class PlayerTacController : MonoBehaviour
     private void OnPlayerAction(InputAction.CallbackContext context) 
     {
         grid.PlacePieceAtLocation(currentTile, Pieces.PieceType.Exe);
+    }
+
+    private void OnIllegalAction(InputAction.CallbackContext context)
+    {
+        grid.IllegalAction();
     }
 
     private int GetNextTileFromInput(int currentTileIndex, float input)
