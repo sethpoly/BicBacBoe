@@ -109,21 +109,22 @@ public abstract class GridManager : MonoBehaviour, IShakeable
         tiles.Values.ToList().ForEach(t => t.transform.SetParent(transform));
     }
 
-    public void RotateGrid()
+    public void RotateGrid(bool isClockwise)
     {
         if(!rotating) 
         {
-            direction = direction.Next();
-            StartCoroutine(Rotate90());
+            float degrees = isClockwise ? -90 : 90;
+            direction = isClockwise ? direction.Next() : direction.Previous();
+            StartCoroutine(Rotate90(degrees));
         }
     }
 
-    IEnumerator Rotate90()
+    IEnumerator Rotate90(float degrees)
     {
         rotating = true;
         float timeElapsed = 0;
         Quaternion startRotation = transform.rotation;
-        Quaternion targetRotation = transform.rotation * Quaternion.Euler(0, 0, 90);
+        Quaternion targetRotation = transform.rotation * Quaternion.Euler(0, 0, degrees);
         while (timeElapsed < rotateDuration)
         {
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / rotateDuration);

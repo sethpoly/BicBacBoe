@@ -28,7 +28,6 @@ public class PlayerTacController : MonoBehaviour
         playerControl.Player.Move.started += OnPlayerChangedTile;
         playerControl.Player.Rotate.started += OnPlayerRotate;
         playerControl.Player.PlacePiece.started += OnPlayerAction;
-        playerControl.Player.IllegalAction.performed += OnIllegalAction;
     }
 
     /// Changing tile hover selection
@@ -48,7 +47,10 @@ public class PlayerTacController : MonoBehaviour
     /// Request to rotate grid
     private void OnPlayerRotate(InputAction.CallbackContext context) 
     {
-        grid.RotateGrid();
+        float playerInput = context.ReadValue<float>();
+        if(playerInput == 0) { return; }
+        bool isClockwise = playerInput == 1;
+        grid.RotateGrid(isClockwise);
     }
 
     /// Request to play an action
@@ -57,15 +59,13 @@ public class PlayerTacController : MonoBehaviour
         grid.PlacePieceAtLocation(currentTile, Pieces.PieceType.Exe);
     }
 
-    private void OnIllegalAction(InputAction.CallbackContext context)
-    {
-        Debug.Log("Illegal pressed");
-        grid.IllegalAction();
-    }
-
     private int GetNextTileFromInput(int currentTileIndex, float input)
     {
-        var nextTile = currentTileIndex + (int)input;
+        int offset = 1;
+        if(grid._direction == GridDirection.East || grid._direction == GridDirection.West) 
+            offset = -1;
+
+        var nextTile = currentTileIndex + (int)input * offset;
         int tileCount = grid._width;
 
         if(nextTile < 0) {
