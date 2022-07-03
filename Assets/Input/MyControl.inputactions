@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "Tap",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "IllegalAction",
+                    "type": "PassThrough",
+                    "id": "c35339e6-3116-4870-bbbd-07ebeceaa5c6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -68,37 +77,15 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "64052cc0-a03f-4e18-8c2c-802a10b5639d",
-                    "path": "1DAxis",
-                    "interactions": "Tap",
+                    "name": "",
+                    "id": "2471d67b-8a81-4808-9fd0-f447b17669f1",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Rotate",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "positive",
-                    "id": "3c63870a-09d6-4225-84d9-475de1962e1a",
-                    "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "negative",
-                    "id": "d8f5312f-fc1b-4e61-bca3-ee1f697ddcdd",
-                    "path": "<Keyboard>/downArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -110,6 +97,39 @@
                     "action": "PlacePiece",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "310eadd6-eab7-401c-b4aa-b63937c2b4ef",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "IllegalAction",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "positive",
+                    "id": "cc7702c9-2c50-4a55-8b64-2a2f9646a89f",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "IllegalAction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "negative",
+                    "id": "b7494b08-097c-414a-a9fa-30998afae1de",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "IllegalAction",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

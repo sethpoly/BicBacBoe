@@ -53,6 +53,15 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Tap"",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""IllegalAction"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""c35339e6-3116-4870-bbbd-07ebeceaa5c6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -90,37 +99,15 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""64052cc0-a03f-4e18-8c2c-802a10b5639d"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": ""Tap"",
+                    ""name"": """",
+                    ""id"": ""2471d67b-8a81-4808-9fd0-f447b17669f1"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Rotate"",
-                    ""isComposite"": true,
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""3c63870a-09d6-4225-84d9-475de1962e1a"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""d8f5312f-fc1b-4e61-bca3-ee1f697ddcdd"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Rotate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -132,6 +119,39 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""action"": ""PlacePiece"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""310eadd6-eab7-401c-b4aa-b63937c2b4ef"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IllegalAction"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""cc7702c9-2c50-4a55-8b64-2a2f9646a89f"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IllegalAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""b7494b08-097c-414a-a9fa-30998afae1de"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IllegalAction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -143,6 +163,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
         m_Player_PlacePiece = m_Player.FindAction("PlacePiece", throwIfNotFound: true);
+        m_Player_IllegalAction = m_Player.FindAction("IllegalAction", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -205,6 +226,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Rotate;
     private readonly InputAction m_Player_PlacePiece;
+    private readonly InputAction m_Player_IllegalAction;
     public struct PlayerActions
     {
         private @PlayerControl m_Wrapper;
@@ -212,6 +234,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
         public InputAction @PlacePiece => m_Wrapper.m_Player_PlacePiece;
+        public InputAction @IllegalAction => m_Wrapper.m_Player_IllegalAction;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -230,6 +253,9 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 @PlacePiece.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlacePiece;
                 @PlacePiece.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlacePiece;
                 @PlacePiece.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlacePiece;
+                @IllegalAction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIllegalAction;
+                @IllegalAction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIllegalAction;
+                @IllegalAction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnIllegalAction;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -243,6 +269,9 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 @PlacePiece.started += instance.OnPlacePiece;
                 @PlacePiece.performed += instance.OnPlacePiece;
                 @PlacePiece.canceled += instance.OnPlacePiece;
+                @IllegalAction.started += instance.OnIllegalAction;
+                @IllegalAction.performed += instance.OnIllegalAction;
+                @IllegalAction.canceled += instance.OnIllegalAction;
             }
         }
     }
@@ -252,5 +281,6 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
         void OnPlacePiece(InputAction.CallbackContext context);
+        void OnIllegalAction(InputAction.CallbackContext context);
     }
 }

@@ -28,6 +28,7 @@ public class PlayerTacController : MonoBehaviour
         playerControl.Player.Move.started += OnPlayerChangedTile;
         playerControl.Player.Rotate.started += OnPlayerRotate;
         playerControl.Player.PlacePiece.started += OnPlayerAction;
+        playerControl.Player.IllegalAction.started += OnIllegalAction;
     }
 
     /// Changing tile hover selection
@@ -47,16 +48,21 @@ public class PlayerTacController : MonoBehaviour
     /// Request to rotate grid
     private void OnPlayerRotate(InputAction.CallbackContext context) 
     {
-        float playerInput = context.ReadValue<float>();
-        if(playerInput == 0) { return; }
-        bool isClockwise = playerInput == 1;
-        grid.RotateGrid(isClockwise);
+        //float playerInput = context.ReadValue<float>();
+        //if(playerInput == 0) { return; }
+        //bool isClockwise = playerInput == 1;
+        grid.RotateGrid(true);
     }
 
     /// Request to play an action
     private void OnPlayerAction(InputAction.CallbackContext context) 
     {
         grid.PlacePieceAtLocation(currentTile, Pieces.PieceType.Exe);
+    }
+
+    private void OnIllegalAction(InputAction.CallbackContext context)
+    {
+        grid.IllegalAction();
     }
 
     private int GetNextTileFromInput(int currentTileIndex, float input)
