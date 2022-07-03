@@ -34,12 +34,12 @@
                 },
                 {
                     "name": "IllegalAction",
-                    "type": "Value",
-                    "id": "3329be9c-4370-49aa-ae00-b8fef0d727a9",
+                    "type": "PassThrough",
+                    "id": "c35339e6-3116-4870-bbbd-07ebeceaa5c6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Tap",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -78,9 +78,9 @@
                 },
                 {
                     "name": "",
-                    "id": "46c11b2a-90f8-4051-8be5-e2d4098b7e98",
+                    "id": "2471d67b-8a81-4808-9fd0-f447b17669f1",
                     "path": "<Keyboard>/r",
-                    "interactions": "Tap",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Rotate",
@@ -99,48 +99,37 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "fb656f17-c291-4c1f-a102-adab11083571",
-                    "path": "<Keyboard>/w",
+                    "name": "1D Axis",
+                    "id": "310eadd6-eab7-401c-b4aa-b63937c2b4ef",
+                    "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "IllegalAction",
-                    "isComposite": false,
+                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "8de4fa00-6d60-4874-b103-665d4370a0ca",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "IllegalAction",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "43f40dfa-091e-44df-ab29-ba8d23392f77",
+                    "name": "positive",
+                    "id": "cc7702c9-2c50-4a55-8b64-2a2f9646a89f",
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "IllegalAction",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 },
                 {
-                    "name": "",
-                    "id": "e48f32b1-30af-4146-90cd-3df53e0902eb",
+                    "name": "negative",
+                    "id": "b7494b08-097c-414a-a9fa-30998afae1de",
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "IllegalAction",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
                 }
             ]
         }

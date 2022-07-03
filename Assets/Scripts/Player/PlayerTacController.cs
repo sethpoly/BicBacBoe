@@ -4,10 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using GridAttributes;
 
 public class PlayerTacController : MonoBehaviour
 {
-    [SerializeField] private TacGridManager grid;
+    [SerializeField] private GridManager grid;
     private PlayerControl playerControl;
     [SerializeField] private Vector2 currentTile;
 
@@ -39,7 +40,7 @@ public class PlayerTacController : MonoBehaviour
 
         var _possibleTiles = grid.GetTileSubset(grid._direction, currentTile);
         int _currentTileIndex = _possibleTiles.FindIndex(t => t._location == currentTile);
-        int _nextTileIndex = GetNextTileFromInput(_currentTileIndex, playerInput);
+        int _nextTileIndex = GetNextTileFromInput(_currentTileIndex, playerInput, _possibleTiles.Count);
 
         currentTile = _possibleTiles[_nextTileIndex]._location;
         grid.SetHoveredTile(currentTile);
@@ -48,13 +49,13 @@ public class PlayerTacController : MonoBehaviour
     /// Request to rotate grid
     private void OnPlayerRotate(InputAction.CallbackContext context) 
     {
-        grid.RotateGrid();
+        grid.RotateGrid(true);
     }
 
     /// Request to play an action
     private void OnPlayerAction(InputAction.CallbackContext context) 
     {
-        grid.PlacePieceAtLocation(currentTile, Pieces.PieceType.Exe);
+        //grid.PlacePieceAtLocation(currentTile, Pieces.PieceType.Exe);
     }
 
     private void OnIllegalAction(InputAction.CallbackContext context)
@@ -62,10 +63,14 @@ public class PlayerTacController : MonoBehaviour
         grid.IllegalAction();
     }
 
-    private int GetNextTileFromInput(int currentTileIndex, float input)
+    private int GetNextTileFromInput(int currentTileIndex, float input, int tileOptionCount)
     {
-        var nextTile = currentTileIndex + (int)input;
-        int tileCount = grid._width;
+        int offset = 1;
+        if(grid._direction == GridDirection.East || grid._direction == GridDirection.West) 
+            offset = -1;
+
+        var nextTile = currentTileIndex + (int)input * offset;
+        int tileCount = tileOptionCount;
 
         if(nextTile < 0) {
             return tileCount - 1;

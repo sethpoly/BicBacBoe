@@ -4,61 +4,65 @@ using System;
 using System.Linq;
 using UnityEngine;
 using TileSpriteRender;
+using GridAttributes;
 
-[AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
-public class GridDirectionAttribute : Attribute
+namespace GridAttributes 
 {
-    public bool sortByX { get; }
-    public SortDirection sortDirection { get; }
-    public AggregateIndex aggregateIndex { get; }
-
-    public GridDirectionAttribute(
-        bool _sortByX,
-        SortDirection _sortDirection,
-        AggregateIndex _aggregateIndex
-        )
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
+    public class GridDirectionAttribute : Attribute
     {
-        sortByX = _sortByX;
-        sortDirection = _sortDirection;
-        aggregateIndex = _aggregateIndex;
+        public bool sortByX { get; }
+        public SortDirection sortDirection { get; }
+        public AggregateIndex aggregateIndex { get; }
+
+        public GridDirectionAttribute(
+            bool _sortByX,
+            SortDirection _sortDirection,
+            AggregateIndex _aggregateIndex
+            )
+        {
+            sortByX = _sortByX;
+            sortDirection = _sortDirection;
+            aggregateIndex = _aggregateIndex;
+        }
     }
-}
 
-public enum SortDirection
-{
-    Ascending,
-    Descending
-}
+    public enum SortDirection
+    {
+        Ascending,
+        Descending
+    }
 
-public enum AggregateIndex
-{
-    First,
-    Last
-}
+    public enum AggregateIndex
+    {
+        First,
+        Last
+    }
 
-public enum GridDirection
-{
-    [GridDirectionAttribute(_sortByX: true, _sortDirection: SortDirection.Ascending, _aggregateIndex: AggregateIndex.Last)]
-    North,
+    public enum GridDirection
+    {
+        [GridDirectionAttribute(_sortByX: true, _sortDirection: SortDirection.Ascending, _aggregateIndex: AggregateIndex.Last)]
+        North,
 
-    [GridDirectionAttribute(_sortByX: false, _sortDirection: SortDirection.Descending, _aggregateIndex: AggregateIndex.Last)]
-    East,
+        [GridDirectionAttribute(_sortByX: false, _sortDirection: SortDirection.Descending, _aggregateIndex: AggregateIndex.Last)]
+        East,
 
-    [GridDirectionAttribute(_sortByX: true, _sortDirection: SortDirection.Descending, _aggregateIndex: AggregateIndex.First)]
-    South,
+        [GridDirectionAttribute(_sortByX: true, _sortDirection: SortDirection.Descending, _aggregateIndex: AggregateIndex.First)]
+        South,
 
-    [GridDirectionAttribute(_sortByX: false, _sortDirection: SortDirection.Ascending, _aggregateIndex: AggregateIndex.First)]
-    West
+        [GridDirectionAttribute(_sortByX: false, _sortDirection: SortDirection.Ascending, _aggregateIndex: AggregateIndex.First)]
+        West
+    }
 }
 
 public abstract class GridManager : MonoBehaviour, IShakeable
 {
     public int _width { get { return width; } private set { _width = value; } }
-    [SerializeField] private int width;
-    [SerializeField] private Tile tilePrefab;
-    [SerializeField] private Transform cam;
+    [SerializeField] public int width;
+    [SerializeField] public Tile tilePrefab;
+    [SerializeField] public Transform cam;
 
-    public Dictionary<Vector2, Tile> tiles { get; private set; }
+    public Dictionary<Vector2, Tile> tiles { get; set; }
     public GridDirection _direction { get { return direction; } private set { _direction = value; } }
     [SerializeField] private GridDirection direction = GridDirection.North;
     [SerializeField] private Boolean rotating = false;
@@ -73,7 +77,7 @@ public abstract class GridManager : MonoBehaviour, IShakeable
 
     // For some reason my grid is generating its x,y values backwards,
     // I'm too lazy to figure out why -__('-')__-
-    private void GenerateGrid()
+    public virtual void GenerateGrid()
     {
         tiles = new Dictionary<Vector2, Tile>();
         for(int x = 0; x < width; x++)
@@ -109,21 +113,22 @@ public abstract class GridManager : MonoBehaviour, IShakeable
         tiles.Values.ToList().ForEach(t => t.transform.SetParent(transform));
     }
 
-    public void RotateGrid()
+    public void RotateGrid(bool isClockwise)
     {
         if(!rotating) 
         {
-            direction = direction.Next();
-            StartCoroutine(Rotate90());
+            float degrees = isClockwise ? -90 : 90;
+            direction = isClockwise ? direction.Next() : direction.Previous();
+            StartCoroutine(Rotate90(degrees));
         }
     }
 
-    IEnumerator Rotate90()
+    IEnumerator Rotate90(float degrees)
     {
         rotating = true;
         float timeElapsed = 0;
         Quaternion startRotation = transform.rotation;
-        Quaternion targetRotation = transform.rotation * Quaternion.Euler(0, 0, 90);
+        Quaternion targetRotation = transform.rotation * Quaternion.Euler(0, 0, degrees);
         while (timeElapsed < rotateDuration)
         {
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, timeElapsed / rotateDuration);
