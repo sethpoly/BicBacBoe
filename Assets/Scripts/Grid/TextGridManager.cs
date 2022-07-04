@@ -44,20 +44,24 @@ public class TextGridManager : GridManager
         {
             foreach(char c in row)
             {
-                // Generate tile
-                var spawnedTile = Instantiate(tilePrefab, currentPosition, Quaternion.identity);
-                spawnedTile.Init(false, currentPosition, TileOrientation.Center);
-
-                foreach(TextMapping tm in mappingData)
+                // Use 'x' has empty space
+                if(c != 'x') 
                 {
-                    if(c == tm.character)
+                    // Generate tile
+                    var spawnedTile = Instantiate(tilePrefab, currentPosition, Quaternion.identity);
+                    spawnedTile.Init(false, currentPosition, TileOrientation.Center);
+                
+                    foreach(TextMapping tm in mappingData)
                     {
-                        Instantiate(tm.prefab, currentPosition, Quaternion.identity, spawnedTile.transform);
-                        // TODO: Make prefab a child of tile, use interface for 
-                        // ->
+                        if(c == tm.character)
+                        {
+                            Instantiate(tm.prefab, currentPosition, Quaternion.identity, spawnedTile.transform);
+                            // TODO: Make prefab a child of tile, use interface for 
+                            // ->
+                        }
                     }
+                    tiles[currentPosition] = spawnedTile;
                 }
-                tiles[currentPosition] = spawnedTile;
                 currentPosition = new Vector2(++currentPosition.x, currentPosition.y);
             }
             currentPosition = new Vector2(0, ++currentPosition.y);
