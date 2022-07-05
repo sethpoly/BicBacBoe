@@ -13,6 +13,7 @@ public class TextGridManager : GridManager
     public TextAsset mapText;
     private Vector2 currentPosition = new Vector2(0, 0);
     private int height;
+    new public Action onSetupCompleted;
 
     void Start()
     {
@@ -76,11 +77,27 @@ public class TextGridManager : GridManager
         SetHoveredTile(tiles.Keys.ToList().First());
 
         // Update pivot to be middle tile
-        Vector3 centerTilePos = tiles.Values.ToList()[tiles.Count / 2].transform.position;
-        transform.position = centerTilePos;
+        transform.position = GetMeanCenter(tiles.Values.Select(t => t.transform).ToList());
 
         // Become a daddy to all tiles
         tiles.Values.ToList().ForEach(t => t.transform.SetParent(transform));
+
+        // Notify delegate
+        onSetupCompleted();
+    }
+
+    /// <summary>
+    /// Get center pos of this GameObject by using the list 
+    /// of child obj transform to determine it
+    /// </summary>
+    private Vector3 GetMeanCenter(List<Transform> transforms)
+    {
+        Vector3 sumVector = Vector3.zero;
+        foreach(Transform obj in transforms)
+        {
+            sumVector += obj.position;
+        }
+        return sumVector / transforms.Count();
     }
 
     public override void IllegalAction()
