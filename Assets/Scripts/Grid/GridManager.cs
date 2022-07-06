@@ -74,12 +74,12 @@ public abstract class GridManager : MonoBehaviour, IShakeable
     void Start()
     {
         shakeBehaviour = GetComponent<ShakeBehaviour>();
-        GenerateGrid();
+        GenerateGrid(null);
     }
 
     // For some reason my grid is generating its x,y values backwards,
     // I'm too lazy to figure out why -__('-')__-
-    public virtual void GenerateGrid()
+    public virtual void GenerateGrid(TextAsset level)
     {
         tiles = new Dictionary<Vector2, Tile>();
         for(int x = 0; x < width; x++)

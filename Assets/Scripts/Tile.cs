@@ -8,6 +8,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject highlight;
 
+
+    [SerializeField] private Sprite finishSprite;
     [SerializeField] private Sprite edgeSprite;
     [SerializeField] private Sprite cornerSprite;
     [SerializeField] private Sprite centerSprite;
@@ -48,6 +50,12 @@ public class Tile : MonoBehaviour
         }
 
         transform.Rotate(0, 0, tileOrientation.GetAttributeOfType<TileSpriteRotation>().rotation);
+    }
+
+    // TODO: Remove - testing only
+    public void MakeFinish()
+    {
+        _renderer.sprite = finishSprite;
     }
 
     public void OnHover()
