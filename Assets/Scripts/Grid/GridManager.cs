@@ -69,6 +69,8 @@ public abstract class GridManager : MonoBehaviour, IShakeable
     [SerializeField] private float rotateDuration = 0.5f;
     public ShakeBehaviour shakeBehaviour { get; set; }
 
+    public Action onSetupCompleted;
+
     void Start()
     {
         shakeBehaviour = GetComponent<ShakeBehaviour>();

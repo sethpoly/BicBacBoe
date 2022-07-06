@@ -44,20 +44,24 @@ public class TextGridManager : GridManager
         {
             foreach(char c in row)
             {
-                // Generate tile
-                var spawnedTile = Instantiate(tilePrefab, currentPosition, Quaternion.identity);
-                spawnedTile.Init(false, currentPosition, TileOrientation.Center);
-
-                foreach(TextMapping tm in mappingData)
+                // Use 'x' has empty space
+                if(c != 'x') 
                 {
-                    if(c == tm.character)
+                    // Generate tile
+                    var spawnedTile = Instantiate(tilePrefab, currentPosition, Quaternion.identity);
+                    spawnedTile.Init(false, currentPosition, TileOrientation.Center);
+                
+                    foreach(TextMapping tm in mappingData)
                     {
-                        Instantiate(tm.prefab, currentPosition, Quaternion.identity, spawnedTile.transform);
-                        // TODO: Make prefab a child of tile, use interface for 
-                        // ->
+                        if(c == tm.character)
+                        {
+                            Instantiate(tm.prefab, currentPosition, Quaternion.identity, spawnedTile.transform);
+                            // TODO: Make prefab a child of tile, use interface for 
+                            // ->
+                        }
                     }
+                    tiles[currentPosition] = spawnedTile;
                 }
-                tiles[currentPosition] = spawnedTile;
                 currentPosition = new Vector2(++currentPosition.x, currentPosition.y);
             }
             currentPosition = new Vector2(0, ++currentPosition.y);
@@ -72,11 +76,27 @@ public class TextGridManager : GridManager
         SetHoveredTile(tiles.Keys.ToList().First());
 
         // Update pivot to be middle tile
-        Vector3 centerTilePos = tiles.Values.ToList()[tiles.Count / 2].transform.position;
-        transform.position = centerTilePos;
+        transform.position = GetMeanCenter(tiles.Values.Select(t => t.transform).ToList());
 
         // Become a daddy to all tiles
         tiles.Values.ToList().ForEach(t => t.transform.SetParent(transform));
+
+        // Notify delegate
+        onSetupCompleted();
+    }
+
+    /// <summary>
+    /// Get center pos of this GameObject by using the list 
+    /// of child obj transform to determine it
+    /// </summary>
+    private Vector3 GetMeanCenter(List<Transform> transforms)
+    {
+        Vector3 sumVector = Vector3.zero;
+        foreach(Transform obj in transforms)
+        {
+            sumVector += obj.position;
+        }
+        return sumVector / transforms.Count();
     }
 
     public override void IllegalAction()

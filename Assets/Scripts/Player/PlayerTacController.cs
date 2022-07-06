@@ -19,9 +19,14 @@ public class PlayerTacController : MonoBehaviour
 
     void Start()
     {
-        currentTile = new Vector2(0, 0);
+        grid.onSetupCompleted = OnGridSetupComplete;
         playerControl.Player.Enable();
         PlayerInput();
+    }
+
+    private void OnGridSetupComplete()
+    {
+        currentTile = grid.tiles.Keys.ToList().First();
     }
 
     private void PlayerInput()
