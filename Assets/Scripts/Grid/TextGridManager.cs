@@ -13,7 +13,6 @@ public class TextGridManager : GridManager
     public TextAsset mapText;
     private Vector2 currentPosition = new Vector2(0, 0);
     private int height;
-    new public Action onSetupCompleted;
 
     void Start()
     {
