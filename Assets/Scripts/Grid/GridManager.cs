@@ -60,7 +60,7 @@ public abstract class GridManager : MonoBehaviour, IShakeable
     public int _width { get { return width; } private set { _width = value; } }
     [SerializeField] public int width;
     [SerializeField] public Tile tilePrefab;
-    [SerializeField] public Transform cam;
+    public Transform cam;
 
     public Dictionary<Vector2, Tile> tiles { get; set; }
     public GridDirection _direction { get { return direction; } private set { _direction = value; } }
@@ -113,6 +113,15 @@ public abstract class GridManager : MonoBehaviour, IShakeable
 
         // Become a daddy to all tiles
         tiles.Values.ToList().ForEach(t => t.transform.SetParent(transform));
+    }
+
+    public void ResetAndCleanup()
+    {
+        if(tiles != null) 
+        {
+            tiles.Values.ToList().ForEach(t => Destroy(t.gameObject));
+            tiles.Clear();
+        }
     }
 
     public void RotateGrid(bool isClockwise)

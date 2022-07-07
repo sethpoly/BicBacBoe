@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1624194124312381626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1624194124312381624}
+  - component: {fileID: 1624194124312381623}
+  - component: {fileID: 1624194124312381622}
+  m_Layer: 0
+  m_Name: TextGridManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1624194124312381624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624194124312381626}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1624194124312381623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624194124312381626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce9d79ea79503c4f842d18c6e168473, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shake_speed: 1
+  originPosition: {x: 0, y: 0, z: 0}
+  isShaking: 0
+  shakeTimer: 0
+  shakeAmount: 0.2
+  shakeSpeed: 10
+--- !u!114 &1624194124312381622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624194124312381626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64d63a2b621eb4c42ac3a39def8405c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 0
+  tilePrefab: {fileID: 7801273289426406650, guid: 4ccb1ad72f553274e9862a48616007a4, type: 3}
+  cam: {fileID: 0}
+  direction: 0
+  rotating: 0
+  rotateDuration: 0.2
+  mappingData:
+  - character: 41
+    prefab: {fileID: 6774389111646711000, guid: c283c96e19202234e8bb4f58fa306087, type: 3}

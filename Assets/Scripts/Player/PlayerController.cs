@@ -6,11 +6,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using GridAttributes;
 
-public class PlayerTacController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private GridManager grid;
-    private PlayerControl playerControl;
     [SerializeField] private Vector2 currentTile;
+    private PlayerControl playerControl;
 
     void Awake()
     {
@@ -22,6 +22,17 @@ public class PlayerTacController : MonoBehaviour
         grid.onSetupCompleted = OnGridSetupComplete;
         playerControl.Player.Enable();
         PlayerInput();
+    }
+
+    void OnEnable()
+    {
+        GameManager.onLevelChange += SetNewGridManager;
+    }
+
+    private void SetNewGridManager(GridManager grid)
+    {
+        Debug.Log("On level change detected - Setting new grid...");
+        this.grid = grid;
     }
 
     private void OnGridSetupComplete()

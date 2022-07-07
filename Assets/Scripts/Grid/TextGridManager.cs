@@ -8,9 +8,13 @@ using TileSpriteRender;
 public class TextGridManager : GridManager
 {
     public TextMapping[] mappingData;
-    public TextAsset mapText;
     private Vector2 currentPosition = new Vector2(0, 0);
-    private int height;
+
+    void Awake()
+    {
+        // Get main camera
+        cam = Camera.main.transform;
+    }
 
     void Start()
     {
@@ -35,7 +39,7 @@ public class TextGridManager : GridManager
         tiles = new Dictionary<Vector2, Tile>();
         string[] rows = Regex.Split(level.text, "\r\n|\r|\n");
         width = GetMapWidth(level);
-        height = GetMapHeight(level);
+        int height = GetMapHeight(level);
 
         foreach(string row in rows.Reverse())
         {
