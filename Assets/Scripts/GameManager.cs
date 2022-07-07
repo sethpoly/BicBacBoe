@@ -13,15 +13,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        grid = GameObject.Find("TextGridManager").GetComponent<TextGridManager>();
         LoadLevel(2);
-        StartCoroutine(passiveMe(2));
-    }
-
-    IEnumerator passiveMe(int secs)
-    {
-        yield return new WaitForSeconds(secs);
-        LoadLevel(3);
     }
 
     public void LoadLevel(int levelNumber)
@@ -38,8 +30,6 @@ public class GameManager : MonoBehaviour
 
     public void UnloadCurrentLevel()
     {
-         //grid.ResetAndCleanup();
-         Destroy(grid.gameObject);
+        Destroy(grid?.gameObject);
     }
-
 }

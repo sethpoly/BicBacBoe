@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 204267c342d3ab24c86148558de6feb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 2004872265}
+  grid: {fileID: 0}
   currentTile: {x: 0, y: 0}
 --- !u!1 &1360539314
 GameObject:
@@ -368,71 +368,3 @@ MonoBehaviour:
   shakeTimer: 0
   shakeAmount: 0.2
   shakeSpeed: 30
---- !u!1001 &2004872264
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381624, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1624194124312381626, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-      propertyPath: m_Name
-      value: TextGridManager
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
---- !u!114 &2004872265 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1624194124312381622, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
-  m_PrefabInstance: {fileID: 2004872264}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64d63a2b621eb4c42ac3a39def8405c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
