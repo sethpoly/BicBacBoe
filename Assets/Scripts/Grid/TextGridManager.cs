@@ -51,6 +51,7 @@ public class TextGridManager : GridManager
                     // Generate tile
                     var spawnedTile = Instantiate(tilePrefab, currentPosition, Quaternion.identity);
                     spawnedTile.Init(false, currentPosition, TileOrientation.Center);
+                    
                 
                     foreach(TextMapping tm in mappingData)
                     {

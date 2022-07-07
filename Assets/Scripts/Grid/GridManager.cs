@@ -164,6 +164,8 @@ public abstract class GridManager : MonoBehaviour, IShakeable
     public void SetHoveredTile(Vector2 nextTile) {
         tiles.Values.ToList().ForEach(t => t.OnHoverExit());
         GetTileAtPosition(nextTile).OnHover();
+
+        // TODO: Check level end?
     }
 
     /// <summary>

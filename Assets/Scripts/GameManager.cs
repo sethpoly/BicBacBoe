@@ -5,15 +5,16 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-
     public static event Action<GridManager> onLevelChange;
     private TextAsset currentLevel;
     private TextGridManager grid;
+
+    [SerializeField] private int startLevel;
     [SerializeField] private TextGridManager gridPrefab;
 
     void Start()
     {
-        LoadLevel(2);
+        LoadLevel(startLevel);
     }
 
     public void LoadLevel(int levelNumber)

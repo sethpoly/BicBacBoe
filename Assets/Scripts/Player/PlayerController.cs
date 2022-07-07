@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("On level change detected - Setting new grid...");
         this.grid = grid;
+        OnGridSetupComplete();
     }
 
     private void OnGridSetupComplete()
