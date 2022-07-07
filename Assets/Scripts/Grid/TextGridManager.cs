@@ -1,44 +1,45 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using System;
 using System.Linq;
 using TileSpriteRender;
-using GridAttributes;
 
 public class TextGridManager : GridManager
 {
     public TextMapping[] mappingData;
-    public TextAsset mapText;
     private Vector2 currentPosition = new Vector2(0, 0);
-    private int height;
+
+    void Awake()
+    {
+        // Get main camera
+        cam = Camera.main.transform;
+    }
 
     void Start()
     {
         shakeBehaviour = GetComponent<ShakeBehaviour>();
-        width = GetMapWidth();
-        height = GetMapHeight();
-        GenerateGrid();
     }
 
-    private int GetMapWidth()
+    private int GetMapWidth(TextAsset level)
     {
-        string[] rows = Regex.Split(mapText.text, "\r\n|\r|\n");
+        string[] rows = Regex.Split(level.text, "\r\n|\r|\n");
         string longest = rows.OrderByDescending( s => s.Length ).First();
         return longest.Length;
     }
 
-    private int GetMapHeight()
+    private int GetMapHeight(TextAsset level)
     {
-       string[] rows = Regex.Split(mapText.text, "\r\n|\r|\n");
+       string[] rows = Regex.Split(level.text, "\r\n|\r|\n");
        return rows.Length;
     }
 
-    override public void GenerateGrid()
+    override public void GenerateGrid(TextAsset level)
     {
         tiles = new Dictionary<Vector2, Tile>();
-        string[] rows = Regex.Split(mapText.text, "\r\n|\r|\n");
+        string[] rows = Regex.Split(level.text, "\r\n|\r|\n");
+        width = GetMapWidth(level);
+        int height = GetMapHeight(level);
 
         foreach(string row in rows.Reverse())
         {
@@ -67,6 +68,10 @@ public class TextGridManager : GridManager
             currentPosition = new Vector2(0, ++currentPosition.y);
         }
 
+        // TODO: remove, temporary testing
+        tiles.Last().Value.MakeFinish();
+
+        // Re-align camera & set new grid pivot point
         cam.transform.position = new Vector3((float)width/2 - 0.5f, (float)height/2 - 0.5f, -10);
         SetupGrid();
     }
@@ -82,7 +87,7 @@ public class TextGridManager : GridManager
         tiles.Values.ToList().ForEach(t => t.transform.SetParent(transform));
 
         // Notify delegate
-        onSetupCompleted();
+        //onSetupCompleted();
     }
 
     /// <summary>

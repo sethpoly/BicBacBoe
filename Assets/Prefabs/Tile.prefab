@@ -183,10 +183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: debdb488005fdcd488c77bc991f89895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseColor: {r: 0.31635642, g: 0.9056604, b: 0.2691349, a: 1}
-  offsetColor: {r: 0.24669957, g: 0.5471698, b: 0.21938412, a: 1}
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  offsetColor: {r: 1, g: 1, b: 1, a: 1}
   _renderer: {fileID: 7801273289426406651}
   highlight: {fileID: 3420240509843635671}
+  finishSprite: {fileID: 21300000, guid: 220cb761d2f43a0479adb3be53df746e, type: 3}
   edgeSprite: {fileID: 21300000, guid: 9fcc66422554c924294b5126158e1db2, type: 3}
   cornerSprite: {fileID: 21300000, guid: f123c57ca73565f48838e598a31b5f78, type: 3}
   centerSprite: {fileID: 21300000, guid: 479a0f8c71ea036488ffdc2fbb39546e, type: 3}
