@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using TileSpriteRender;
 
-public class Tile : MonoBehaviour
+public abstract class Tile : MonoBehaviour
 {
     [SerializeField] private Color baseColor, offsetColor;
     [SerializeField] private SpriteRenderer _renderer;
@@ -17,7 +17,6 @@ public class Tile : MonoBehaviour
     public Vector2 _location { get; private set; }
     [SerializeField] private TileOrientation startingOrientation;
     [SerializeField] public Piece associatedPiece { get; private set; }
-    public TileType tileType { get; private set; } = TileType.Normal;
 
     public void Init(bool isOffset, Vector2 location, TileOrientation tileOrientation)
     {
@@ -27,6 +26,9 @@ public class Tile : MonoBehaviour
 
         SetSprite(startingOrientation);
     }
+
+    /// All inheriting Tiles must specify a tile type
+    public abstract TileType GetTileType();
 
     private void SetSprite(TileOrientation tileOrientation)
     {
@@ -57,7 +59,7 @@ public class Tile : MonoBehaviour
     public void MakeFinish()
     {
         _renderer.sprite = finishSprite;
-        tileType = TileType.Finish;
+        //tileType = TileType.Finish;
     }
 
     public void OnHover()

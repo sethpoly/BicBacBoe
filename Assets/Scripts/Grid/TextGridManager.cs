@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using System;
 using System.Linq;
@@ -106,7 +105,7 @@ public class TextGridManager : GridManager
 
     public override void CheckWinCondition(Tile currentTile)
     {
-        if(currentTile.tileType == TileType.Finish)
+        if(currentTile.GetTileType() == TileType.Finish)
         {
             gameManager.LoadLevel();
         }
