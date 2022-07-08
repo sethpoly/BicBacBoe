@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b228c7fdb8cde7f4eb7ab834c274283c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startLevel: 3
+  currentLevelId: 1
   gridPrefab: {fileID: 1624194124312381622, guid: f597a8010ba67f94f8577bc92fb20813, type: 3}
 --- !u!1 &1279691399
 GameObject:

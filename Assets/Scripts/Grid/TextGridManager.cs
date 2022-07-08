@@ -9,6 +9,7 @@ public class TextGridManager : GridManager
 {
     public TextMapping[] mappingData;
     private Vector2 currentPosition = new Vector2(0, 0);
+    private GameManager gameManager;
 
     void Awake()
     {
@@ -34,6 +35,11 @@ public class TextGridManager : GridManager
        return rows.Length;
     }
 
+    public void Init(GameManager _gameManager)
+    {
+        gameManager = _gameManager;
+    }
+
     override public void GenerateGrid(TextAsset level)
     {
         tiles = new Dictionary<Vector2, Tile>();
@@ -45,7 +51,7 @@ public class TextGridManager : GridManager
         {
             foreach(char c in row)
             {
-                // Use 'x' has empty space
+                // Use 'x' as empty space
                 if(c != 'x') 
                 {
                     // Generate tile
@@ -110,5 +116,13 @@ public class TextGridManager : GridManager
         shakeBehaviour.ShakeForTime(timeInSeconds: .15f, () => {
             Debug.Log("Shaking finished!");
         });
+    }
+
+    public override void CheckWinCondition(Tile currentTile)
+    {
+        if(currentTile.tileType == TileType.Finish)
+        {
+            gameManager.LoadLevel();
+        }
     }
 }

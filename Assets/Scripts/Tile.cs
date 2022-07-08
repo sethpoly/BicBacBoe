@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour
     public Vector2 _location { get; private set; }
     [SerializeField] private TileOrientation startingOrientation;
     [SerializeField] public Piece associatedPiece { get; private set; }
+    public TileType tileType { get; private set; } = TileType.Normal;
 
     public void Init(bool isOffset, Vector2 location, TileOrientation tileOrientation)
     {
@@ -56,6 +57,7 @@ public class Tile : MonoBehaviour
     public void MakeFinish()
     {
         _renderer.sprite = finishSprite;
+        tileType = TileType.Finish;
     }
 
     public void OnHover()
@@ -76,6 +78,13 @@ public class Tile : MonoBehaviour
 
 namespace TileSpriteRender 
 {
+    // Types of tiles for each level
+    public enum TileType
+    {
+        Normal,
+        Finish
+    }
+
     public enum TileOrientation
     {
 

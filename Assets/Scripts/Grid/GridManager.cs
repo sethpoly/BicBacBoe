@@ -166,6 +166,7 @@ public abstract class GridManager : MonoBehaviour, IShakeable
         GetTileAtPosition(nextTile).OnHover();
 
         // TODO: Check level end?
+        CheckWinCondition(GetTileAtPosition(nextTile));
     }
 
     /// <summary>
@@ -265,4 +266,5 @@ public abstract class GridManager : MonoBehaviour, IShakeable
     }
 
     public abstract void IllegalAction();
+    public abstract void CheckWinCondition(Tile currentTile);
 }

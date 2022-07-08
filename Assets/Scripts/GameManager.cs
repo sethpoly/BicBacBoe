@@ -9,12 +9,12 @@ public class GameManager : MonoBehaviour
     private TextAsset currentLevel;
     private TextGridManager grid;
 
-    [SerializeField] private int startLevel;
+    [SerializeField] private int currentLevelId;
     [SerializeField] private TextGridManager gridPrefab;
 
     void Start()
     {
-        LoadLevel(startLevel);
+        LoadLevel(currentLevelId);
     }
 
     public void LoadLevel(int levelNumber)
@@ -22,11 +22,19 @@ public class GameManager : MonoBehaviour
         UnloadCurrentLevel();
 
         currentLevel = Resources.Load<TextAsset>($"Levels/level_{levelNumber}");
+        currentLevelId = levelNumber;
         grid = Instantiate(gridPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        grid.Init(this);
         grid.GenerateGrid(currentLevel);
 
         // Invoke delegate
         onLevelChange?.Invoke(grid);
+    }
+
+    public void LoadLevel()
+    {
+        int nextLevel = currentLevelId + 1;
+        LoadLevel(nextLevel);
     }
 
     public void UnloadCurrentLevel()
