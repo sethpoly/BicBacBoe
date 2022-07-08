@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        grid.onSetupCompleted = OnGridSetupComplete;
         playerControl.Player.Enable();
         PlayerInput();
     }

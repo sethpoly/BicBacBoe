@@ -85,4 +85,9 @@ public class TacGridManager : GridManager
     {
         throw new System.NotImplementedException();
     }
+
+    public override void GenerateGrid(TextAsset text)
+    {
+        throw new System.NotImplementedException();
+    }
 }

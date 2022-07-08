@@ -11,27 +11,16 @@ public class TextGridManager : GridManager
     private Vector2 currentPosition = new Vector2(0, 0);
     private GameManager gameManager;
 
-    void Awake()
-    {
-        // Get main camera
-        cam = Camera.main.transform;
-    }
-
-    void Start()
-    {
-        shakeBehaviour = GetComponent<ShakeBehaviour>();
-    }
-
     private int GetMapWidth(TextAsset level)
     {
-        string[] rows = Regex.Split(level.text, "\r\n|\r|\n");
+        string[] rows = TextAssetHelper.GetRowsFromText(level.text);
         string longest = rows.OrderByDescending( s => s.Length ).First();
         return longest.Length;
     }
 
     private int GetMapHeight(TextAsset level)
     {
-       string[] rows = Regex.Split(level.text, "\r\n|\r|\n");
+       string[] rows = TextAssetHelper.GetRowsFromText(level.text);
        return rows.Length;
     }
 
@@ -43,7 +32,7 @@ public class TextGridManager : GridManager
     override public void GenerateGrid(TextAsset level)
     {
         tiles = new Dictionary<Vector2, Tile>();
-        string[] rows = Regex.Split(level.text, "\r\n|\r|\n");
+        string[] rows = TextAssetHelper.GetRowsFromText(level.text);
         width = GetMapWidth(level);
         int height = GetMapHeight(level);
 
@@ -92,9 +81,6 @@ public class TextGridManager : GridManager
 
         // Become a daddy to all tiles
         tiles.Values.ToList().ForEach(t => t.transform.SetParent(transform));
-
-        // Notify delegate
-        //onSetupCompleted();
     }
 
     /// <summary>
